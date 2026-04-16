@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         int[] myArray = new int[20];
+        double average;
 
         initArray(myArray);
         System.out.println("Елементи масиву: " + Arrays.toString(myArray));
@@ -18,7 +19,14 @@ public class Main {
 
         findResult = findMax(myArray);
         System.out.println("Найбільший елемент: " + findResult[0] + " (з індексом " + findResult[1] +")");
-        System.out.println("Середнє арифметичне чисел після першого від'ємного числа: " + calcAverage(myArray));
+
+        average = calcAverage(myArray);
+        if (Double.isNaN(average)) {
+            System.out.println("У масиві немає від'ємних чисел.");
+        }
+        else {
+            System.out.println("Середнє арифметичне чисел після першого від'ємного числа: " + average);
+        }
 
     }
 
@@ -66,7 +74,7 @@ public class Main {
 
     public static int[] findMin(int[] array) {
         int min = 0;
-        int[] result = new int[2]; // 1st element is value, 2nd is index
+        int[] result = new int[2]; // 1st element is value, 2nd is its index
 
         for (int i = 0; i < array.length; i++) {
             if (array[i] < min) {
@@ -80,7 +88,7 @@ public class Main {
 
     public static int[] findMax(int[] array) {
         int max = 0;
-        int[] result = new int[2]; // 1st element is value, 2nd is index
+        int[] result = new int[2]; // 1st element is value, 2nd is its index
 
         for (int i = 0; i < array.length; i++) {
             if (array[i] > max) {
@@ -106,6 +114,11 @@ public class Main {
             sum += el;
         }
 
-        return Math.round((double) sum / (double) newArray.length * 100.0) / 100.0;
+        if (newArray.length > 0) {
+            return Math.round((double) sum / newArray.length * 100.0) / 100.0;
+        }
+        else {
+            return Double.NaN;
+        }
     }
 }

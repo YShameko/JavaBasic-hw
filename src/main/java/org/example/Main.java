@@ -13,8 +13,7 @@ public class Main {
         System.out.println("Кількість парних чисел: " + qtyEvens(myArray));
         System.out.println("Кількість непарних чисел: " + qtyOdds(myArray));
 
-        int[] findResult = new int[2];
-        findResult = findMin(myArray);
+        int[] findResult = findMin(myArray);
         System.out.println("Найменший елемент: " + findResult[0] + " (з індексом " + findResult[1] +")");
 
         findResult = findMax(myArray);

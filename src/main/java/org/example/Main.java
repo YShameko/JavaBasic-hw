@@ -1,123 +1,74 @@
 package org.example;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        int[] myArray = new int[20];
-        double average;
+        int[] myArray = new int[15];
+        int index;
 
         initArray(myArray);
-        System.out.println("Елементи масиву: " + Arrays.toString(myArray));
-        System.out.println("Сума від'ємних чисел: " + sumNegatives(myArray));
-        System.out.println("Кількість парних чисел: " + qtyEvens(myArray));
-        System.out.println("Кількість непарних чисел: " + qtyOdds(myArray));
+        System.out.println("Початковий вигляд масиву: " + Arrays.toString(myArray));
 
-        int[] findResult = findMin(myArray);
-        System.out.println("Найменший елемент: " + findResult[0] + " (з індексом " + findResult[1] +")");
+        insertionSort(myArray);
+        System.out.println("Відсортований масив:      " + Arrays.toString(myArray));
 
-        findResult = findMax(myArray);
-        System.out.println("Найбільший елемент: " + findResult[0] + " (з індексом " + findResult[1] +")");
-
-        average = calcAverage(myArray);
-        if (Double.isNaN(average)) {
-            System.out.println("У масиві немає від'ємних чисел.");
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Введіть число для пошуку: ");
+        int numberToFind = userInput.nextInt();
+        index = binarySearch(myArray, numberToFind);
+        if (index >= 0) {
+            System.out.printf("Індекс числа %d у відсортованому масиві: %d%n", numberToFind, index);
         }
         else {
-            System.out.println("Середнє арифметичне чисел після першого від'ємного числа: " + average);
+            System.out.printf("Число %d у масиві не знайдено %n", numberToFind);
         }
-
     }
 
     public static void initArray(int[] array) {
         for (int i = 0; i < array.length; i++) {
-            array[i] = (int)(Math.random() * 201) - 100;
+            array[i] = (int)(Math.random() * 100) + 1;
         }
     }
-
-    public static int sumNegatives(int[] array) {
-        int sum = 0;
-
-        for(int el: array) {
-            if (el < 0) {
-                sum += el;
-            }
-        }
-
-        return sum;
+    //------------------------------------------------------------------------------------
+    public static int binarySearch(int[] array, int value) {
+        return binarySearch(array, value, 0, array.length - 1);
     }
 
-    public static int qtyEvens(int[] array) {
-        int qty = 0;
+    private static int binarySearch(int[] array, int value, int low, int high) {
+        int index = -1; // повертаємо -1, якщо не знайшли value серед елементів масиву
+        int middle;
 
-        for(int el: array) {
-            if (el % 2 == 0) {
-                qty++;
+        if (low <= high) {
+            middle = low + (high - low) / 2;
+            if (array[middle] == value) {
+                index = middle;
+            } else if (array.length > 1) {
+                if (array[middle] > value) {
+                    index = binarySearch(array, value, low, high - 1);
+                } else {
+                    index = binarySearch(array, value, middle + 1, high);
+                }
             }
         }
-
-        return qty;
+        return index;
     }
+    //------------------------------------------------------------------------------------
+    public static void insertionSort(int[] array) {
+        int currentElement;
 
-    public static int qtyOdds(int[] array) {
-        int qty = 0;
-
-        for(int el: array) {
-            if (el % 2 != 0) {
-                qty++;
+        for (int i = 1; i < array.length; i++) {
+            currentElement = array[i];
+            for (int j = i - 1; j >= 0; j--) {
+                if (currentElement < array[j]) {
+                    array[j + 1] = array[j];
+                    array[j] = currentElement;
+                }
+                else {
+                    break;
+                }
             }
-        }
-
-        return qty;
-    }
-
-    public static int[] findMin(int[] array) {
-        int min = 0;
-        int[] result = new int[2]; // 1st element is value, 2nd is its index
-
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] < min) {
-                result[0] = min = array[i];
-                result[1] = i;
-            }
-        }
-
-        return result;
-    }
-
-    public static int[] findMax(int[] array) {
-        int max = 0;
-        int[] result = new int[2]; // 1st element is value, 2nd is its index
-
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] > max) {
-                result[0] = max = array[i];
-                result[1] = i;
-            }
-        }
-
-        return result;
-    }
-
-    public static double calcAverage(int[] array) {
-        int sum = 0;
-        int[] newArray = {};
-
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] < 0) {
-                newArray = Arrays.copyOfRange(array, i + 1, array.length);
-                break;
-            }
-        }
-        for(int el: newArray) {
-            sum += el;
-        }
-
-        if (newArray.length > 0) {
-            return Math.round((double) sum / newArray.length * 100.0) / 100.0;
-        }
-        else {
-            return Double.NaN;
         }
     }
 }

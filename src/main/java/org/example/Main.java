@@ -1,74 +1,156 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-        int[] myArray = new int[15];
-        int index;
+        int[][] myArray = new int[4][4];
 
         initArray(myArray);
-        System.out.println("Початковий вигляд масиву: " + Arrays.toString(myArray));
-
-        insertionSort(myArray);
-        System.out.println("Відсортований масив:      " + Arrays.toString(myArray));
-
-        Scanner userInput = new Scanner(System.in);
-        System.out.println("Введіть число для пошуку: ");
-        int numberToFind = userInput.nextInt();
-        index = binarySearch(myArray, numberToFind);
-        if (index >= 0) {
-            System.out.printf("Індекс числа %d у відсортованому масиві: %d%n", numberToFind, index);
+        displayArray(myArray);
+        sumEvenRows(myArray);
+        sumOddRows(myArray);
+        productEvenColumns(myArray);
+        productOddColumns(myArray);
+        if (isThisMatrixMagic(myArray)) {
+            System.out.println("Ця матриця є магічним квадратом. Пощастило ж тобі!");
         }
         else {
-            System.out.printf("Число %d у масиві не знайдено %n", numberToFind);
+            System.out.println("Матриця не є магічним квадратом.");
         }
     }
-
-    public static void initArray(int[] array) {
+    //------------------------------------------------------------------------------------
+    public static void initArray(int[][] array) {
         for (int i = 0; i < array.length; i++) {
-            array[i] = (int)(Math.random() * 100) + 1;
-        }
-    }
-    //------------------------------------------------------------------------------------
-    public static int binarySearch(int[] array, int value) {
-        return binarySearch(array, value, 0, array.length - 1);
-    }
-
-    private static int binarySearch(int[] array, int value, int low, int high) {
-        int index = -1; // повертаємо -1, якщо не знайшли value серед елементів масиву
-        int middle;
-
-        if (low <= high) {
-            middle = low + (high - low) / 2;
-            if (array[middle] == value) {
-                index = middle;
-            } else if (array.length > 1) {
-                if (array[middle] > value) {
-                    index = binarySearch(array, value, low, high - 1);
-                } else {
-                    index = binarySearch(array, value, middle + 1, high);
-                }
-            }
-        }
-        return index;
-    }
-    //------------------------------------------------------------------------------------
-    public static void insertionSort(int[] array) {
-        int currentElement;
-
-        for (int i = 1; i < array.length; i++) {
-            currentElement = array[i];
-            for (int j = i - 1; j >= 0; j--) {
-                if (currentElement < array[j]) {
-                    array[j + 1] = array[j];
-                    array[j] = currentElement;
-                }
-                else {
-                    break;
-                }
+            for (int j = 0; j < array[i].length; j++) {
+                array[i][j] = (int) (Math.random() * 50) + 1;
             }
         }
     }
+
+    //------------------------------------------------------------------------------------
+    public static void displayArray(int[][] array) {
+        System.out.println("Матриця " + array.length + "х" + array.length);
+        for (int[] row: array) {
+            for (int value: row) {
+                System.out.printf("%2s ", value);
+            }
+            System.out.println();
+        }
+    }
+
+    //------------------------------------------------------------------------------------
+    public static void sumEvenRows(int[][] array) {
+        int sum = 0;
+        String message;
+
+        message = "Сума елементів у парних рядках (рядок ";
+        for (int i = 0; i < array.length; i += 2) {
+                message += i + ", ";
+                for (int j = 0; j < array[i].length; j++) {
+                    sum += array[i][j];
+                }
+        }
+        message = message.substring(0, message.length() - 2) + "): " + sum;
+        System.out.println(message);
+    }
+
+    //------------------------------------------------------------------------------------
+    public static void sumOddRows(int[][] array) {
+        int sum = 0;
+        String message;
+
+        message = "Сума елементів у непарних рядках (рядок ";
+        for (int i = 1; i < array.length; i += 2) {
+                message += i + ", ";
+                for (int j = 0; j < array[i].length; j++) {
+                    sum += array[i][j];
+                }
+        }
+        message = message.substring(0, message.length() - 2) + "): " + sum;
+        System.out.println(message);
+    }
+
+    //------------------------------------------------------------------------------------
+    public static void productEvenColumns(int[][] array) {
+        long product = 1;
+        String message;
+
+        message = "Добуток елементів у парних стовпцях (стовпець ";
+        for (int j = 0; j < array[0].length; j += 2) {
+            for (int i = 0; i < array.length; i++) {
+                    product *= array[i][j];
+            }
+            message += j + ", ";
+        }
+        message = message.substring(0, message.length() - 2) + "): " + product;
+        System.out.println(message);
+    }
+
+    //------------------------------------------------------------------------------------
+    public static void productOddColumns(int[][] array) {
+        long product = 1;
+        String message;
+
+        message = "Добуток елементів у непарних стовпцях (стовпець ";
+        for (int j = 1; j < array[0].length; j += 2) {
+            for (int i = 0; i < array.length; i++) {
+                product *= array[i][j];
+            }
+            message += j + ", ";
+        }
+        message = message.substring(0, message.length() - 2) + "): " + product;
+        System.out.println(message);
+    }
+
+    //------------------------------------------------------------------------------------
+    public static boolean isThisMatrixMagic(int[][] array) {
+        int magicSum = 0;
+        int currentSum;
+
+        if (array.length == 0 || array.length != array[0].length) {
+            return false; // якщо матриця нульових розмірів або не квадратна
+        }
+
+        for (int value: array[0]) {
+                magicSum += value;
+        }
+        // для рядків
+        for (int i = 1; i < array.length; i ++) {
+            currentSum = 0;
+            for (int j = 0; j < array[i].length; j++) {
+                currentSum += array[i][j];
+            }
+            if (currentSum != magicSum) {
+                return false;
+            }
+        }
+        // для стовпців
+        for (int j = 0; j < array[0].length; j ++) {
+            currentSum = 0;
+            for (int i = 0; i < array.length; i++) {
+                currentSum += array[i][j];
+            }
+            if (currentSum != magicSum) {
+                return false;
+            }
+        }
+        // тепер діагоналі
+        currentSum = 0;
+        for (int i = 0; i < array.length; i ++) {
+            currentSum += array[i][i];
+        }
+        if (currentSum != magicSum) {
+            return false;
+        }
+
+        currentSum = 0;
+        for (int i = 0; i < array.length; i ++) {
+            currentSum += array[i][array.length - 1 - i];
+        }
+        if (currentSum != magicSum) {
+            return false;
+        }
+
+        return true;
+    }
+    //------------------------------------------------------------------------------------
 }

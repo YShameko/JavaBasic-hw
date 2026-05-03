@@ -1,156 +1,105 @@
 package org.example;
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        int[][] myArray = new int[4][4];
 
-        initArray(myArray);
-        displayArray(myArray);
-        sumEvenRows(myArray);
-        sumOddRows(myArray);
-        productEvenColumns(myArray);
-        productOddColumns(myArray);
-        if (isThisMatrixMagic(myArray)) {
-            System.out.println("Ця матриця є магічним квадратом. Пощастило ж тобі!");
-        }
-        else {
-            System.out.println("Матриця не є магічним квадратом.");
-        }
+        Scanner userInput = new Scanner(System.in);
+        System.out.print("Введіть ціле число: ");
+        int userNumber = userInput.nextInt();
+        System.out.printf("Квадрат числа %d дорівнює %d %n%n", userNumber, calculateSquare(userNumber));
+
+        System.out.print("Введіть радіус циліндра: ");
+        double radius = userInput.nextDouble();
+        System.out.print("та його висоту: ");
+        double height = userInput.nextDouble();
+        System.out.printf("Об'єм циліндра з радіусом %.2f і висотою %.2f дорівнює %.2f %n%n",
+                radius, height, calculateCylinderVolume(radius, height));
+
+        System.out.print("Скільки чисел буде у масиві? ");
+        int n = userInput.nextInt();
+        int[] array = new int[n];
+        initArray(array);
+        System.out.println("Масив чисел: " + Arrays.toString(array));
+        System.out.printf("Сума всіх елементів масиву дорівнює %d %n%n", sumArray(array));
+
+        userInput.nextLine(); // Очищуємо "хвіст" після попереднього вводу
+        System.out.print("Введіть рядок: ");
+        String userString = userInput.nextLine();
+        System.out.println("Рядок в зворотньому порядку: " + reverseString(userString));
+        System.out.println();
+
+
+        System.out.print("Введіть a: ");
+        int userA = userInput.nextInt();
+        System.out.print("Введіть b: ");
+        int userB = userInput.nextInt();
+        System.out.printf("Результат %d^%d дорівнює %d %n%n", userA, userB, aPowerB(userA, userB));
+
+        System.out.print("Введіть ціле число n: ");
+        n = userInput.nextInt();
+        userInput.nextLine(); // Очищуємо "хвіст" після попереднього вводу
+        System.out.print("Введіть текстовий рядок: ");
+        userString = userInput.nextLine();
+        repeatThisLine(n, userString);
     }
     //------------------------------------------------------------------------------------
-    public static void initArray(int[][] array) {
+    public static int calculateSquare(int value) {
+        return value * value;
+    }
+
+    //------------------------------------------------------------------------------------
+    public static double calculateCylinderVolume(double radius, double height) {
+        double pi = 3.14159;
+        return pi * radius * radius * height;
+    }
+
+    //------------------------------------------------------------------------------------
+    public static void initArray(int[] array) {
+        Scanner userInput = new Scanner(System.in);
         for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                array[i][j] = (int) (Math.random() * 50) + 1;
-            }
+            System.out.printf("Введіть %d-е число: ", i + 1);
+            array[i] = userInput.nextInt();
         }
     }
 
     //------------------------------------------------------------------------------------
-    public static void displayArray(int[][] array) {
-        System.out.println("Матриця " + array.length + "х" + array.length);
-        for (int[] row: array) {
-            for (int value: row) {
-                System.out.printf("%2s ", value);
-            }
-            System.out.println();
-        }
-    }
-
-    //------------------------------------------------------------------------------------
-    public static void sumEvenRows(int[][] array) {
+    public static int sumArray(int[] array) {
         int sum = 0;
-        String message;
 
-        message = "Сума елементів у парних рядках (рядок ";
-        for (int i = 0; i < array.length; i += 2) {
-                message += i + ", ";
-                for (int j = 0; j < array[i].length; j++) {
-                    sum += array[i][j];
-                }
+        for (int currentValue : array) {
+            sum += currentValue;
         }
-        message = message.substring(0, message.length() - 2) + "): " + sum;
-        System.out.println(message);
+        return sum;
     }
 
     //------------------------------------------------------------------------------------
-    public static void sumOddRows(int[][] array) {
-        int sum = 0;
-        String message;
+    public static String reverseString(String text) {
+        String result = "";
 
-        message = "Сума елементів у непарних рядках (рядок ";
-        for (int i = 1; i < array.length; i += 2) {
-                message += i + ", ";
-                for (int j = 0; j < array[i].length; j++) {
-                    sum += array[i][j];
-                }
+        for (int i = text.length() - 1; i >= 0; i--) {
+            result += text.charAt(i);
         }
-        message = message.substring(0, message.length() - 2) + "): " + sum;
-        System.out.println(message);
+        return result;
     }
 
     //------------------------------------------------------------------------------------
-    public static void productEvenColumns(int[][] array) {
-        long product = 1;
-        String message;
+    public static long aPowerB(int a, int b) {
+        long result = a;
 
-        message = "Добуток елементів у парних стовпцях (стовпець ";
-        for (int j = 0; j < array[0].length; j += 2) {
-            for (int i = 0; i < array.length; i++) {
-                    product *= array[i][j];
-            }
-            message += j + ", ";
+        for (int i = 1; i < b; i++) {
+            result *= a;
         }
-        message = message.substring(0, message.length() - 2) + "): " + product;
-        System.out.println(message);
+        return result;
     }
 
     //------------------------------------------------------------------------------------
-    public static void productOddColumns(int[][] array) {
-        long product = 1;
-        String message;
-
-        message = "Добуток елементів у непарних стовпцях (стовпець ";
-        for (int j = 1; j < array[0].length; j += 2) {
-            for (int i = 0; i < array.length; i++) {
-                product *= array[i][j];
-            }
-            message += j + ", ";
+    public static void repeatThisLine(int n, String text) {
+        for (int i = 1; i <= n; i++) {
+            System.out.println(text);
         }
-        message = message.substring(0, message.length() - 2) + "): " + product;
-        System.out.println(message);
-    }
-
-    //------------------------------------------------------------------------------------
-    public static boolean isThisMatrixMagic(int[][] array) {
-        int magicSum = 0;
-        int currentSum;
-
-        if (array.length == 0 || array.length != array[0].length) {
-            return false; // якщо матриця нульових розмірів або не квадратна
-        }
-
-        for (int value: array[0]) {
-                magicSum += value;
-        }
-        // для рядків
-        for (int i = 1; i < array.length; i ++) {
-            currentSum = 0;
-            for (int j = 0; j < array[i].length; j++) {
-                currentSum += array[i][j];
-            }
-            if (currentSum != magicSum) {
-                return false;
-            }
-        }
-        // для стовпців
-        for (int j = 0; j < array[0].length; j ++) {
-            currentSum = 0;
-            for (int i = 0; i < array.length; i++) {
-                currentSum += array[i][j];
-            }
-            if (currentSum != magicSum) {
-                return false;
-            }
-        }
-        // тепер діагоналі
-        currentSum = 0;
-        for (int i = 0; i < array.length; i ++) {
-            currentSum += array[i][i];
-        }
-        if (currentSum != magicSum) {
-            return false;
-        }
-
-        currentSum = 0;
-        for (int i = 0; i < array.length; i ++) {
-            currentSum += array[i][array.length - 1 - i];
-        }
-        if (currentSum != magicSum) {
-            return false;
-        }
-
-        return true;
     }
     //------------------------------------------------------------------------------------
 }

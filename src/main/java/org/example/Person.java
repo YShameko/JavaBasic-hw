@@ -6,9 +6,9 @@ public class Person {
     String profession;
 
     public Person(String name, int age, String profession) {
-        this.name = (name != null && !name.isBlank()) ? name : "Unknown";
-        this.age = (age > 0) ? age : 0;
-        this.profession = (profession != null && !profession.isBlank()) ? profession : "Unemployed";
+        this.name = name;
+        this.age = age;
+        this.profession = profession;
     }
 
     public Person() {

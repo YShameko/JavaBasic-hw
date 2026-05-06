@@ -11,6 +11,11 @@ public class Main {
         Person person3 = new Person("Bob", 35, "Лікар");
         Person person4 = new Person("Alice", 28, "Архітектор");
 
+        System.out.println(person1.getInfo());
+        System.out.println(person2.getInfo());
+        System.out.println(person3.getInfo());
+        System.out.println(person4.getInfo());
+
         // можемо змінити професію так:
         person4.setInfo(person4.name, person4.age,"Дизайнер");
         // або через окремий метод:

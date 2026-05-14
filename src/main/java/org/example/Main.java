@@ -1,26 +1,16 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
 
-        Person person1 = new Person("John", 30, "Інженер");
-        Person person2 = new Person("Mary", 25, "Вчитель");
-        Person person3 = new Person("Bob", 35, "Лікар");
-        Person person4 = new Person("Alice", 28, "Архітектор");
+        Employee person1 = new Employee("John", "Інженер", "123@test.com",
+                "380(50) 111-22-33", 30);
+        Employee person2 = new Employee();
+        System.out.println(person1);
+        System.out.println(person2);
 
-        System.out.println(person1.getInfo());
-        System.out.println(person2.getInfo());
-        System.out.println(person3.getInfo());
-        System.out.println(person4.getInfo());
-
-        // можемо змінити професію так:
-        person4.setInfo(person4.name, person4.age,"Дизайнер");
-        // або через окремий метод:
-        person4.setProfession("Дизайнер");
-        System.out.println("Після оновлення професії");
-        System.out.println(person4.getInfo());
+        Car testCar = new Car();
+        testCar.start();
     }
+
 }

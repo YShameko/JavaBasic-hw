@@ -1,17 +1,45 @@
 package org.example;
 
-public abstract class Figure {
-    double size1;
-    double size2;
+interface Figure {
+    double calculateArea();
+}
 
-    public Figure(double size1, double size2) {
-        this.size1 = size1;
-        this.size2 = size2;
+class Circle implements Figure {
+    double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
     }
 
-    public Figure(double size1) {
-        this.size1 = size1;
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Square implements Figure {
+    double size;
+
+    Square(double size) {
+        this.size = size;
     }
 
-    public abstract double calculateArea();
+    @Override
+    public double calculateArea() {
+        return size * size;
+    }
+}
+
+class Triangle implements Figure {
+    double base, height;
+
+    Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+
+    @Override
+    public double calculateArea() {
+        return base * height / 2;
+    }
 }

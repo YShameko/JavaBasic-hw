@@ -2,14 +2,21 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        Figure[] figures = new Figure[3];
-        figures[0] = new Circle(5.2);
-        figures[1] = new Triangle(2.2, 7.1);
-        figures[2] = new Square(5.2);
-        for(Figure currentFigure: figures) {
-            System.out.println("The area of a " + currentFigure.getClass().getSimpleName() +
-                    " is " + currentFigure.calculateArea());
-        }
+        Figure[] figures = {new Circle(5.2),
+            new Triangle(2.2, 7.1),
+            new Square(5.2)
+        };
+
+        System.out.println("Total area of all these figures is: " + calculateAllAreas(figures));
     }
 
+    public static double calculateAllAreas(Figure[] figures) {
+        double sumAreas = 0;
+
+        for(Figure currentFigure: figures) {
+            sumAreas += currentFigure.calculateArea();
+        }
+
+        return sumAreas;
+    }
 }

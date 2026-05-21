@@ -2,13 +2,11 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        Printer msg = new DisplayMessage();
+        Printer printer = new DisplayMessage();
 
-        msg.print(null, null);
-
-        msg.print("Привіт усім!", "");
-
-        msg.print("Все працює!", "Yuriy");
+        printer.print(new DisplayMessage.Message(null, null));
+        printer.print(new DisplayMessage.Message("Привіт усім!", ""));
+        printer.print(new DisplayMessage.Message("Все працює!", "Yuriy"));
     }
 
 }

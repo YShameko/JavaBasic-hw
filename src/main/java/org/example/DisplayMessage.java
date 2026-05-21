@@ -3,27 +3,27 @@ package org.example;
 public class DisplayMessage implements Printer {
 
     @Override
-    public void print(String messageText, String senderName) {
+    public void print(Message message) {
 
         // Умова 3: Якщо обидва поля null
-        if (messageText == null && senderName == null) {
+        if (message.text == null && message.sender == null) {
             Printer anonymousProcessor = new Printer() {
                 @Override
-                public void print(String message, String sender) {
+                public void print(Message message) {
                     System.out.println("Опрацьовується пусте повідомлення від анонімного користувача...");
                 }
             };
-            anonymousProcessor.print(messageText, senderName);
+            anonymousProcessor.print(message);
             return;
         }
 
         // Умова 1: Якщо sender пустий або null
-        if (senderName == null || senderName.isBlank()) {
-            System.out.println("Анонімний користувач відправив повідомлення: " + messageText);
+        if (message.sender == null || message.sender.isBlank()) {
+            System.out.println("Анонімний користувач відправив повідомлення: " + message.text);
         }
         // Умова 2: Якщо sender присутній
         else {
-            System.out.println("Користувач " + senderName + " відправив повідомлення: " + messageText);
+            System.out.println("Користувач " + message.sender + " відправив повідомлення: " + message.text);
         }
     }
 
